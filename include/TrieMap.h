@@ -1,5 +1,7 @@
 #include "Trie.h"
 
+#include <map>
+
 class TrieMap
 {
 private:

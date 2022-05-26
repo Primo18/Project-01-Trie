@@ -1,5 +1,5 @@
-#include "Trie_Array.h"
-#include "Trie_Map.h"
+#include "TrieArray.h"
+#include "TrieMap.h"
 
 int main(int argc, char const *argv[])
 {
