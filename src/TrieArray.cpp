@@ -1,34 +1,72 @@
 #include "TrieArray.h"
 
-struct TrieNode *createNode(void)
-{
+// Returns true if node has no children, else false
+bool isEmpty(TrieNode *node) {
+    for (auto &child: node->children) { if (child) return false; }
+    return true;
+}
+
+struct TrieNode *createNode() {
     struct TrieNode *newNode = new TrieNode;
-    for (int i = 0; i < ALPHABET_SIZE; i++)
-    {
-        newNode->children[i] = nullptr;
+    for (auto &child: newNode->children) {
+        child = nullptr;
     }
     newNode->isEndOfWord = false;
     return newNode;
 }
 
-TrieArray::TrieArray()
-{
+// Recursive function to delete a key from given Trie
+struct TrieNode *removeNode(TrieNode *node, string key, int depth) {
+    // If tree is empty
+    if (!node)
+        return nullptr;
+
+    // If last character of key is being processed
+    if (depth == key.size()) {
+
+        // This node is no more end of word after
+        // removal of given key
+        if (node->isEndOfWord)
+            node->isEndOfWord = false;
+
+        // If given is not prefix of any other word
+        if (isEmpty(node)) {
+            delete (node);
+            node = nullptr;
+        }
+
+        return node;
+    }
+
+    // If not last character, recur for the child
+    // obtained using ASCII value
+    int index = key[depth] - 'a';
+    node->children[index] =
+            removeNode(node->children[index], key, depth + 1);
+
+    // If node does not have any child (its only child got
+    // deleted), and it is not end of another word.
+    if (isEmpty(node) && !node->isEndOfWord) {
+        delete (node);
+        node = nullptr;
+    }
+
+    return node;
+}
+
+TrieArray::TrieArray() {
     root = createNode();
 }
 
-TrieArray::~TrieArray()
-{
+TrieArray::~TrieArray() {
     delete[] root;
 }
 
-void TrieArray::insert(const string &word)
-{
+void TrieArray::insert(const string &word) {
     struct TrieNode *tmp = root;
-    for (int i = 0; i < word.length(); i++)
-    {
-        int index = word[i] - 'a';
-        if (tmp->children[index] == nullptr)
-        {
+    for (char c: word) {
+        int index = c - 'a';
+        if (tmp->children[index] == nullptr) {
             // create a new node if the path doesn't exist
             tmp->children[index] = createNode();
         }
@@ -40,14 +78,11 @@ void TrieArray::insert(const string &word)
 }
 
 // Returns true if word presents in trie, else false
-bool TrieArray::search(const string &word)
-{
+bool TrieArray::search(const string &word) {
     struct TrieNode *tmp = root;
-    for (int i = 0; i < word.length(); i++)
-    {
-        int index = word[i] - 'a';
-        if (!tmp->children[index])
-        {
+    for (char c: word) {
+        int index = c - 'a';
+        if (!tmp->children[index]) {
             return false;
         }
         tmp = tmp->children[index];
@@ -56,17 +91,17 @@ bool TrieArray::search(const string &word)
     return tmp->isEndOfWord;
 }
 
-bool TrieArray::remove(const string &word)
-{
-    return false;
+bool TrieArray::remove(const string &word) {
+    removeNode(root, word, 0);
+    return true;
 }
 
-vector<string> TrieArray::getAll()
-{
+vector<string> TrieArray::getAll() {
     return {};
 }
 
-vector<string> TrieArray::getKTopMatches(const string &, int)
-{
+vector<string> TrieArray::getKTopMatches(const string &, int) {
     return {};
 }
+
+
