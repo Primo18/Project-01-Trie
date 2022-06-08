@@ -6,6 +6,11 @@ bool isEmpty(TrieNode *node) {
     return true;
 }
 
+// function to check if current node is end of word or not
+bool isEndOfWord(struct TrieNode *node) {
+    return node->isEndOfWord;
+}
+
 // Crea un nuevo nodo y setea a null sus hijos
 struct TrieNode *createNode() {
     struct TrieNode *newNode = new TrieNode;
@@ -34,18 +39,33 @@ struct TrieNode *removeNode(TrieNode *node, string key, int depth) {
         }
         return node;
     }
-    // If not last character, recur for the child
-    // obtained using ASCII value
+    // If not last character, recur for the child obtained using ASCII value
     int index = key[depth] - 'a';
-    node->children[index] =
-            removeNode(node->children[index], key, depth + 1);
-    // If node does not have any child (its only child got
-    // deleted), and it is not end of another word.
+    node->children[index] = removeNode(node->children[index], key, depth + 1);
+    // If node does not have any child (its only child got deleted), and it is not end of another word.
     if (isEmpty(node) && !node->isEndOfWord) {
         delete (node);
         node = nullptr;
     }
     return node;
+}
+
+// function that stores words from the trie in a vector
+void storeKeys(struct TrieNode *root, char str[], int level, vector<string> *list) {
+    // If node is end of word, it indicates end of string, so a null character is added
+    if (isEndOfWord(root)) {
+        str[level] = '\0';
+        string s;
+        s += str;
+        list->push_back(s);
+    }
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        // if NON-NULL child is found add parent key to str and call the storeKeys function recursively for child node
+        if (root->children[i]) {
+            str[level] = i + 'a';
+            storeKeys(root->children[i], str, level + 1, list);
+        }
+    }
 }
 
 TrieArray::TrieArray() {
@@ -92,7 +112,11 @@ bool TrieArray::remove(const string &word) {
 }
 
 vector<string> TrieArray::getAll() {
-    return {};
+    vector<string> list;
+    int level = 0;
+    char str[25];
+    storeKeys(root, str, level, &list);
+    return list;
 }
 
 vector<string> TrieArray::getKTopMatches(const string &, int) {

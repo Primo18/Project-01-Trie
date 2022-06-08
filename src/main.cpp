@@ -3,22 +3,26 @@
 
 int main(int argc, char const *argv[]) {
     TrieArray *trieArray = new TrieArray();
-    // Input keys (use only 'a' through 'z'
-    // and lower case)
-    string keys[] = {"the", "a", "there",
-                     "answer", "any", "by",
-                     "bye", "their", "hero", "heroplane"};
-    int n = sizeof(keys) / sizeof(keys[0]);
+    // Keys to be inserted in Trie
+    char keys[][8] = {"the", "a", "there", "answer",
+                      "any", "by", "bye", "their", "these"};
 
-    // Construct trie
-    for (int i = 0; i < n; i++)
-        trieArray->insert(keys[i]);
+    // Inserting keys in Trie
+    for (auto &key: keys)
+        trieArray->insert(key);
 
     // Search for different keys
-    bool foo = trieArray->remove("heroplane");
-    cout << foo << endl;
-    trieArray->search("hero") ? cout << "Yes\n" : cout << "No\n";
-    trieArray->search("heroplane") ? cout << "Yes\n" : cout << "No\n";
+    trieArray->search("by") ? cout << "Yes\n" : cout << "No\n";
+    trieArray->remove("bye");
+    trieArray->search("by") ? cout << "Yes\n" : cout << "No\n";
+    trieArray->search("bye") ? cout << "Yes\n" : cout << "No\n";
+
+    // Displaying content of Trie
+    cout << "Content of Trie: " << endl;
+    vector<string> list = trieArray->getAll();
+    for (auto &word: list) {
+        cout << word << endl;
+    }
 
     delete trieArray;
     return 0;
