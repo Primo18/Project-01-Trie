@@ -27,7 +27,7 @@ vector<string> TrieMap::getAll()
     return {};
 }
 
-vector<string> TrieMap::getKTopMatches(const string &)
+vector<string> TrieMap::getKTopMatches(const string &, int)
 {
     return {};
 }

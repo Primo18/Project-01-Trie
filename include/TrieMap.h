@@ -13,5 +13,5 @@ public:
     bool search(const string &);
     bool remove(const string &);
     vector<string> getAll();
-    vector<string> getKTopMatches(const string &);
+    vector<string> getKTopMatches(const string &, int);
 };
