@@ -6,6 +6,7 @@ bool isEmpty(TrieNode *node) {
     return true;
 }
 
+// Crea un nuevo nodo y setea a null sus hijos
 struct TrieNode *createNode() {
     struct TrieNode *newNode = new TrieNode;
     for (auto &child: newNode->children) {
@@ -20,37 +21,30 @@ struct TrieNode *removeNode(TrieNode *node, string key, int depth) {
     // If tree is empty
     if (!node)
         return nullptr;
-
     // If last character of key is being processed
     if (depth == key.size()) {
-
         // This node is no more end of word after
         // removal of given key
         if (node->isEndOfWord)
             node->isEndOfWord = false;
-
         // If given is not prefix of any other word
         if (isEmpty(node)) {
             delete (node);
             node = nullptr;
         }
-
         return node;
     }
-
     // If not last character, recur for the child
     // obtained using ASCII value
     int index = key[depth] - 'a';
     node->children[index] =
             removeNode(node->children[index], key, depth + 1);
-
     // If node does not have any child (its only child got
     // deleted), and it is not end of another word.
     if (isEmpty(node) && !node->isEndOfWord) {
         delete (node);
         node = nullptr;
     }
-
     return node;
 }
 
@@ -92,6 +86,7 @@ bool TrieArray::search(const string &word) {
 }
 
 bool TrieArray::remove(const string &word) {
+    if (!search(word)) return false;
     removeNode(root, word, 0);
     return true;
 }

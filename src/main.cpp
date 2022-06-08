@@ -15,10 +15,8 @@ int main(int argc, char const *argv[]) {
         trieArray->insert(keys[i]);
 
     // Search for different keys
-    trieArray->search("the") ? cout << "Yes\n" : cout << "No\n";
-    trieArray->search("these") ? cout << "Yes\n" : cout << "No\n";
-
-    trieArray->remove("heroplane");
+    bool foo = trieArray->remove("heroplane");
+    cout << foo << endl;
     trieArray->search("hero") ? cout << "Yes\n" : cout << "No\n";
     trieArray->search("heroplane") ? cout << "Yes\n" : cout << "No\n";
 
