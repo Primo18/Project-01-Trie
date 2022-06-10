@@ -3,6 +3,8 @@
         "cstdlib": "cpp",
         "vector": "cpp",
         "iostream": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "iosfwd": "cpp"
     }
 }
