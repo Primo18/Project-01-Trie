@@ -7,7 +7,7 @@ struct TrieNodeMap {
     bool isEndOfWord;
 };
 
-class TrieMap {
+class TrieMap : public Trie {
 private:
     struct TrieNodeMap *root;
 public:

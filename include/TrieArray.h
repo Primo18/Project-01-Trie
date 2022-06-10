@@ -15,11 +15,11 @@ public:
 
     ~TrieArray();
 
-    void insert(const string &word);
+    void insert(const string &);
 
-    bool search(const string &word);
+    bool search(const string &);
 
-    bool remove(const string &word);
+    bool remove(const string &);
 
     vector<string> getAll();
 
