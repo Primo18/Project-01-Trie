@@ -12,9 +12,8 @@ int main(int argc, char const *argv[]) {
     for (auto &key: keys) {
         trieMap->insert(key);
     }
-    // Search for different keys in Trie Map
-    trieMap->search("by") ? cout << "Yes\n" : cout << "No\n";
-    trieMap->search("b") ? cout << "Yes\n" : cout << "No\n";
+    trieMap->remove("the");
+    trieMap->remove("zoological");
     // Displaying content of Trie
     cout << "Content of TrieMap: " << endl;
     vector<string> list = trieMap->getAll();

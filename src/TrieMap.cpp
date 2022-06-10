@@ -1,12 +1,9 @@
 #include "TrieMap.h"
 
 // Returns true if node has no children, else false
-//bool isEmpty(TrieNodeMap *node) {
-//    for (auto &child: node->children) {
-//        if (child) return false;
-//    }
-//    return true;
-//}
+bool isEmpty(TrieNodeMap *node) {
+    return node->children.empty();
+}
 
 // function to check if current node is end of word or not
 bool isEndOfWord(struct TrieNodeMap *node) {
@@ -19,34 +16,34 @@ struct TrieNodeMap *createNodeMap() {
     return newNode;
 }
 
-// Recursive function to delete a key from given Trie
-//struct TrieNode *removeNodeMap(TrieNode *node, string key, int depth) {
-//    // If tree is empty
-//    if (!node)
-//        return nullptr;
-//    // If last character of key is being processed
-//    if (depth == key.size()) {
-//        // This node is no more end of word after
-//        // removal of given key
-//        if (node->isEndOfWord)
-//            node->isEndOfWord = false;
-//        // If given is not prefix of any other word
-//        if (isEmpty(node)) {
-//            delete (node);
-//            node = nullptr;
-//        }
-//        return node;
-//    }
-//    // If not last character, recur for the child obtained using ASCII value
-//    int index = key[depth] - 'a';
-//    node->children[index] = removeNodeMap(node->children[index], key, depth + 1);
-//    // If node does not have any child (its only child got deleted), and it is not end of another word.
-//    if (isEmpty(node) && !node->isEndOfWord) {
-//        delete (node);
-//        node = nullptr;
-//    }
-//    return node;
-//}
+// Recursive function to delete a key from given TrieMap
+struct TrieNodeMap *removeNodeMap(TrieNodeMap *node, const string &key, int depth) {
+    // If tree is empty
+    if (node == nullptr) {
+        return nullptr;
+    }
+    // If last character of key is being processed
+    if (depth == key.size()) {
+        // This node is no more end of word after
+        // removal of given key
+        if (node->isEndOfWord)
+            node->isEndOfWord = false;
+        // If given is not prefix of any other word
+        if (isEmpty(node)) {
+            delete (node);
+            node = nullptr;
+        }
+        return node;
+    }
+    // If not last character, recur for the child
+    node->children[key[depth]] = removeNodeMap(node->children[key[depth]], key, depth + 1);
+    // If node does not have any child (its only child got deleted), and it is not end of another word.
+    if (isEmpty(node) && !node->isEndOfWord) {
+        delete (node);
+        node = nullptr;
+    }
+    return node;
+}
 
 // function that stores words from the trie in a vector
 void storeKeys(struct TrieNodeMap *root, char str[], int level, vector<string> *list) {
@@ -100,11 +97,11 @@ bool TrieMap::search(const string &word) {
     return tmp->isEndOfWord;
 }
 
-//bool TrieMap::remove(const string &word) {
-//    if (!search(word)) return false;
-//    removeNodeMap(root, word, 0);
-//    return true;
-//}
+bool TrieMap::remove(const string &word) {
+    if (!search(word)) return false;
+    removeNodeMap(root, word, 0);
+    return true;
+}
 
 vector<string> TrieMap::getAll() {
     vector<string> list;
