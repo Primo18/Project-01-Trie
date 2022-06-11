@@ -5,7 +5,7 @@ int main(int argc, char const *argv[]) {
     TrieArray *trieArray = new TrieArray();
     TrieMap *trieMap = new TrieMap();
 
-    int n = 100000;    // Cantidad de elementos en el Trie
+    int n = 350000;    // Cantidad de elementos en el Trie
     // Lee dic
     ifstream ifile;
     ifile.open("dic/dic1.txt"); // Abrir dic
@@ -107,13 +107,13 @@ int main(int argc, char const *argv[]) {
     printf("***** Tiempo total con %d palabras *****\n\n", n);
     // Trie Array
     printf("TrieArray: Insertar %d palabras = %.10f segundos.\n", n, timeInsert_TrieArray);
-    printf("TrieArray: Quitar %d palabras   = %.10f segundos.\n", n, timeRemove_TrieArray);
     printf("TrieArray: Buscar %d palabras   = %.10f segundos.\n", n, timeSearch_TrieArray);
+    printf("TrieArray: Quitar %d palabras   = %.10f segundos.\n", n, timeRemove_TrieArray);
     printf("TrieArray: Obtener %d palabras  = %.10f segundos.\n\n", n, timeGetAll_TrieArray);
     // Trie Map
     printf("TrieMap: Insertar %d palabras = %.10f segundos.\n", n, timeInsert_TrieMap);
-    printf("TrieMap: Quitar %d palabras   = %.10f segundos.\n", n, timeRemove_TrieMap);
     printf("TrieMap: Buscar %d palabras   = %.10f segundos.\n", n, timeSearch_TrieMap);
+    printf("TrieMap: Quitar %d palabras   = %.10f segundos.\n", n, timeRemove_TrieMap);
     printf("TrieMap: Obtener %d palabras  = %.10f segundos.\n", n, timeGetAll_TrieMap);
 
 
