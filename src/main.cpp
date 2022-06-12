@@ -33,10 +33,19 @@ int main(int argc, char const *argv[]) {
         start = clock();
         for (int i = 0; i < n; i++) {
             ifile >> s;
-            trieArray->insert(s);
+            trieArray->insert(s, 0);
         }
         end = clock();
         timeInsert_TrieArray += (double) (end - start) / CLOCKS_PER_SEC;
+
+        // Ejemplo
+        cout << "Buscar palabras en orden alfabético para autocompletado para : 'guess'" << endl;
+        vector<string> list = trieArray->getKTopMatches("guess", 2);
+        for (auto &i: list) {
+            cout << i << endl;
+        }
+        cout << "" << endl;
+        // Salida : guessable, guessed
 
         // Obtiene todas las palabras del TrieArray y los almacena en un vector. Usando el método getAll()
         start = clock();
@@ -65,7 +74,7 @@ int main(int argc, char const *argv[]) {
         start = clock();
         for (int i = 0; i < n; i++) {
             ifile >> s;
-            trieMap->insert(s);
+            trieMap->insert(s, 0);
         }
         end = clock();
         timeInsert_TrieMap += (double) (end - start) / CLOCKS_PER_SEC;
@@ -97,13 +106,6 @@ int main(int argc, char const *argv[]) {
         cout << "No se pudo abrir el diccionario" << endl;
     }
 
-//    // Displaying content of Trie
-//    cout << "Content of TrieArray: " << endl;
-//    vector<string> list = trieMap->getAll();
-//    for (auto &word: list) {
-//        cout << word << endl;
-//    }
-
     printf("***** Tiempo total con %d palabras *****\n\n", n);
     // Trie Array
     printf("TrieArray: Insertar %d palabras = %.10f segundos.\n", n, timeInsert_TrieArray);
@@ -115,7 +117,6 @@ int main(int argc, char const *argv[]) {
     printf("TrieMap: Buscar %d palabras   = %.10f segundos.\n", n, timeSearch_TrieMap);
     printf("TrieMap: Quitar %d palabras   = %.10f segundos.\n", n, timeRemove_TrieMap);
     printf("TrieMap: Obtener %d palabras  = %.10f segundos.\n", n, timeGetAll_TrieMap);
-
 
     delete trieMap;
     delete trieArray;

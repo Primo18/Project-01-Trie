@@ -5,6 +5,7 @@
 struct TrieNodeMap {
     map<char, TrieNodeMap *> children;
     bool isEndOfWord;
+    int frecuencia;
 };
 
 class TrieMap : public Trie {
@@ -15,7 +16,7 @@ public:
 
     ~TrieMap();
 
-    void insert(const string &);
+    void insert(const string &, int);
 
     bool search(const string &);
 

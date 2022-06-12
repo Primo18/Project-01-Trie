@@ -69,7 +69,7 @@ TrieMap::TrieMap() {
 TrieMap::~TrieMap() {
 }
 
-void TrieMap::insert(const string &word) {
+void TrieMap::insert(const string &word, int frecuencia) {
     struct TrieNodeMap *tmp = root;
     for (char c: word) {
         //if char not in map
@@ -82,6 +82,7 @@ void TrieMap::insert(const string &word) {
     }
     // mark last node as leaf
     tmp->isEndOfWord = true;
+    tmp->frecuencia = frecuencia;
 }
 
 // Returns true if word presents in trie, else false

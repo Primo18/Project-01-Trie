@@ -5,6 +5,7 @@ const int ALPHABET_SIZE = 26;
 struct TrieNode {
     struct TrieNode *children[ALPHABET_SIZE];
     bool isEndOfWord;
+    int frecuencia;
 };
 
 class TrieArray : public Trie {
@@ -15,7 +16,7 @@ public:
 
     ~TrieArray();
 
-    void insert(const string &);
+    void insert(const string &, int);
 
     bool search(const string &);
 

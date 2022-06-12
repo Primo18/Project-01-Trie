@@ -1,5 +1,9 @@
 #include "TrieArray.h"
 
+// Converts key current character into index
+// use only 'a' through 'z' and lower case
+#define CHAR_TO_INDEX(c) ((int)c - (int)'a')
+
 // Returns true if node has no children, else false
 bool isEmpty(TrieNode *node) {
     for (auto &child: node->children) { if (child) return false; }
@@ -68,6 +72,23 @@ void storeKeys(struct TrieNode *root, char str[], int level, vector<string> *lis
     }
 }
 
+// Recursive function  for given node
+void suggestionsRec(struct TrieNode *root,
+                    const string currPrefix, vector<string> &list, int frecuencia) {
+    // found a string in Trie with the given prefix
+    if (isEmpty(root) && list.size() < frecuencia) {
+        list.push_back(currPrefix);
+    }
+
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+        if (root->children[i]) {
+            // child node character value
+            char child = 'a' + i;
+            suggestionsRec(root->children[i],
+                           currPrefix + child, list, frecuencia);
+        }
+}
+
 TrieArray::TrieArray() {
     root = createNode();
 }
@@ -76,7 +97,7 @@ TrieArray::~TrieArray() {
     delete[] root;
 }
 
-void TrieArray::insert(const string &word) {
+void TrieArray::insert(const string &word, int frecuencia) {
     struct TrieNode *tmp = root;
     for (char c: word) {
         int index = c - 'a';
@@ -89,6 +110,7 @@ void TrieArray::insert(const string &word) {
     }
     // mark last node as leaf
     tmp->isEndOfWord = true;
+    tmp->frecuencia = frecuencia;
 }
 
 // Returns true if word presents in trie, else false
@@ -119,8 +141,26 @@ vector<string> TrieArray::getAll() {
     return list;
 }
 
-vector<string> TrieArray::getKTopMatches(const string &, int) {
-    return {};
+vector<string> TrieArray::getKTopMatches(const string &s, int frecuencia) {
+    vector<string> list;
+    struct TrieNode *tmp = root;
+    for (char c: s) {
+        int ind = CHAR_TO_INDEX(c);
+
+        // no string in the Trie has this prefix
+        if (!tmp->children[ind])
+            return list;
+
+        tmp = tmp->children[ind];
+    }
+    // If prefix is present as a word, but there is no subtree below the last matching tmp.
+    if (isEmpty(tmp) && list.size() < frecuencia) {
+        list.push_back(s);
+        return list;
+    }
+    suggestionsRec(tmp, s, list, frecuencia);
+
+    return list;
 }
 
 
