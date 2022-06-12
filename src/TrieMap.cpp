@@ -1,35 +1,42 @@
 #include "TrieMap.h"
 
 // Returns true if node has no children, else false
-bool isEmpty(TrieNodeMap *node) {
+bool isEmpty(TrieNodeMap *node)
+{
     return node->children.empty();
 }
 
 // function to check if current node is end of word or not
-bool isEndOfWord(struct TrieNodeMap *node) {
+bool isEndOfWord(struct TrieNodeMap *node)
+{
     return node->isEndOfWord;
 }
 
-struct TrieNodeMap *createNodeMap() {
+struct TrieNodeMap *createNodeMap()
+{
     struct TrieNodeMap *newNode = new TrieNodeMap;
     newNode->isEndOfWord = false;
     return newNode;
 }
 
 // Recursive function to delete a key from given TrieMap
-struct TrieNodeMap *removeNodeMap(TrieNodeMap *node, const string &key, int depth) {
+struct TrieNodeMap *removeNodeMap(TrieNodeMap *node, const string &key, int depth)
+{
     // If tree is empty
-    if (node == nullptr) {
+    if (node == nullptr)
+    {
         return nullptr;
     }
     // If last character of key is being processed
-    if (depth == key.size()) {
+    if (depth == key.size())
+    {
         // This node is no more end of word after
         // removal of given key
         if (node->isEndOfWord)
             node->isEndOfWord = false;
         // If given is not prefix of any other word
-        if (isEmpty(node)) {
+        if (isEmpty(node))
+        {
             delete (node);
             node = nullptr;
         }
@@ -38,7 +45,8 @@ struct TrieNodeMap *removeNodeMap(TrieNodeMap *node, const string &key, int dept
     // If not last character, recur for the child
     node->children[key[depth]] = removeNodeMap(node->children[key[depth]], key, depth + 1);
     // If node does not have any child (its only child got deleted), and it is not end of another word.
-    if (isEmpty(node) && !node->isEndOfWord) {
+    if (isEmpty(node) && !node->isEndOfWord)
+    {
         delete (node);
         node = nullptr;
     }
@@ -46,50 +54,65 @@ struct TrieNodeMap *removeNodeMap(TrieNodeMap *node, const string &key, int dept
 }
 
 // function that stores words from the trie in a vector
-void storeKeys(struct TrieNodeMap *root, char str[], int level, vector<string> *list) {
+void storeKeys(struct TrieNodeMap *root, char str[], int level, vector<string> *list)
+{
     // If node is end of word, it indicates end of string, so a null character is added
-    if (isEndOfWord(root)) {
+    if (isEndOfWord(root))
+    {
         str[level] = '\0';
         string s;
         s += str;
         list->push_back(s);
     }
-    for (auto &it: root->children) {
-        if (it.second != nullptr) {
+    for (auto &it : root->children)
+    {
+        if (it.second != nullptr)
+        {
             str[level] = it.first;
             storeKeys(it.second, str, level + 1, list);
         }
     }
 }
 
-TrieMap::TrieMap() {
+TrieMap::TrieMap()
+{
     root = createNodeMap();
 }
 
-TrieMap::~TrieMap() {
-    destroyRecursive(root);
+TrieMap::~TrieMap()
+{
+    // destroyRecursive(root);
 }
 
-void TrieMap::destroyRecursive(TrieNodeMap *node) {
-    if (node != nullptr) {
-        if (isEmpty(node)) {
+void TrieMap::destroyRecursive(TrieNodeMap *node)
+{
+    if (node != nullptr)
+    {
+        if (isEmpty(node))
+        {
             // delete the leaf node
             delete (node);
             return;
         }
-        for (auto &child: root->children) {
+        for (auto &child : root->children)
+        {
             destroyRecursive(child.second);
         }
-    } else {
+    }
+    else
+    {
         return;
     }
 }
 
-void TrieMap::insert(const string &word, int frecuencia) {
+void TrieMap::insert(const string &word, int frecuencia)
+{
     struct TrieNodeMap *tmp = root;
-    for (char c: word) {
-        //if char not in map
-        if (tmp->children.find(c) == tmp->children.end()) {
+    for (char c : word)
+    {
+        // if char not in map
+        if (tmp->children.find(c) == tmp->children.end())
+        {
             // create a new node if the path doesn't exist
             tmp->children[c] = createNodeMap();
         }
@@ -102,10 +125,13 @@ void TrieMap::insert(const string &word, int frecuencia) {
 }
 
 // Returns true if word presents in trie, else false
-bool TrieMap::search(const string &word) {
+bool TrieMap::search(const string &word)
+{
     struct TrieNodeMap *tmp = root;
-    for (char c: word) {
-        if (tmp->children.find(c) == tmp->children.end()) {
+    for (char c : word)
+    {
+        if (tmp->children.find(c) == tmp->children.end())
+        {
             return false;
         }
         tmp = tmp->children[c];
@@ -114,13 +140,16 @@ bool TrieMap::search(const string &word) {
     return tmp->isEndOfWord;
 }
 
-bool TrieMap::remove(const string &word) {
-    if (!search(word)) return false;
+bool TrieMap::remove(const string &word)
+{
+    if (!search(word))
+        return false;
     removeNodeMap(root, word, 0);
     return true;
 }
 
-vector<string> TrieMap::getAll() {
+vector<string> TrieMap::getAll()
+{
     vector<string> list;
     int level = 0;
     char str[25];
@@ -128,6 +157,7 @@ vector<string> TrieMap::getAll() {
     return list;
 }
 
-vector<string> TrieMap::getKTopMatches(const string &, int) {
+vector<string> TrieMap::getKTopMatches(const string &, int)
+{
     return {};
 }
