@@ -94,7 +94,23 @@ TrieArray::TrieArray() {
 }
 
 TrieArray::~TrieArray() {
-    delete[] root;
+    destroyRecursive(root);
+}
+
+void TrieArray::destroyRecursive(TrieNode *node) {
+    if (node != nullptr) {
+        if (isEmpty(node)) {
+            // delete the leaf node
+            delete (node);
+            return;
+        }
+
+        for (auto &child: root->children) {
+            destroyRecursive(child);
+        }
+    } else {
+        return;
+    }
 }
 
 void TrieArray::insert(const string &word, int frecuencia) {

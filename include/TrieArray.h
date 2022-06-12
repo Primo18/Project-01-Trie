@@ -25,4 +25,6 @@ public:
     vector<string> getAll();
 
     vector<string> getKTopMatches(const string &, int);
+
+    void destroyRecursive(TrieNode *node);
 };

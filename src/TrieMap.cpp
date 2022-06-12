@@ -67,6 +67,22 @@ TrieMap::TrieMap() {
 }
 
 TrieMap::~TrieMap() {
+    destroyRecursive(root);
+}
+
+void TrieMap::destroyRecursive(TrieNodeMap *node) {
+    if (node != nullptr) {
+        if (isEmpty(node)) {
+            // delete the leaf node
+            delete (node);
+            return;
+        }
+        for (auto &child: root->children) {
+            destroyRecursive(child.second);
+        }
+    } else {
+        return;
+    }
 }
 
 void TrieMap::insert(const string &word, int frecuencia) {
